@@ -20,7 +20,7 @@ const bikeData = {
 };
 
 // ===================== DROPDOWN LOGIC =====================
-document.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("load", () => {
   const allowedMakes = ["Aprilia","BMW","Ducati","Honda","Kawasaki","KTM","Suzuki","Triumph","Yamaha"];
 
   const makeDropdown = document.getElementById("make");
@@ -28,6 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const modelDropdown = document.getElementById("model");
   const oilContainer = document.getElementById("oilFilters");
   const airContainer = document.getElementById("airFilters");
+
+  if (!makeDropdown || !yearDropdown || !modelDropdown) return;
 
   // Populate Make dropdown
   Object.keys(bikeData)
@@ -101,3 +103,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
