@@ -1,4 +1,4 @@
-export const bikeData = {
+window.bikeData = {
   "ADLY": {
     "2011": {
       "600U": {
