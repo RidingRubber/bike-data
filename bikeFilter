@@ -1,0 +1,103 @@
+// ===================== BIKE DATA =====================
+const bikeData = {
+  Honda: {
+    "2022": {
+      CBR1000RR: {
+        oilFilters: [{ brand: "HiFlo", part: "HF204", price: 18.95 }],
+        airFilters: [{ brand: "DNA", part: "DNA-123", price: 129.00 }]
+      }
+    }
+  },
+  Yamaha: {
+    "2023": {
+      R1M: {
+        oilFilters: [{ brand: "Motul", part: "7100", price: 26.00 }],
+        airFilters: [{ brand: "DNA", part: "DNA-456", price: 139.00 }]
+      }
+    }
+  }
+  // Add other bikes here...
+};
+
+// ===================== DROPDOWN LOGIC =====================
+document.addEventListener("DOMContentLoaded", () => {
+  const allowedMakes = ["Aprilia","BMW","Ducati","Honda","Kawasaki","KTM","Suzuki","Triumph","Yamaha"];
+
+  const makeDropdown = document.getElementById("make");
+  const yearDropdown = document.getElementById("year");
+  const modelDropdown = document.getElementById("model");
+  const oilContainer = document.getElementById("oilFilters");
+  const airContainer = document.getElementById("airFilters");
+
+  // Populate Make dropdown
+  Object.keys(bikeData)
+    .filter(make => allowedMakes.includes(make))
+    .forEach(make => {
+      const option = document.createElement("option");
+      option.value = make;
+      option.textContent = make;
+      makeDropdown.appendChild(option);
+    });
+
+  // Populate Year dropdown
+  makeDropdown.addEventListener("change", () => {
+    const make = makeDropdown.value;
+    yearDropdown.innerHTML = '<option value="">Select Year</option>';
+    modelDropdown.innerHTML = '<option value="">Select Model</option>';
+    oilContainer.innerHTML = "";
+    airContainer.innerHTML = "";
+
+    if (!make) return;
+
+    Object.keys(bikeData[make]).forEach(year => {
+      const option = document.createElement("option");
+      option.value = year;
+      option.textContent = year;
+      yearDropdown.appendChild(option);
+    });
+  });
+
+  // Populate Model dropdown
+  yearDropdown.addEventListener("change", () => {
+    const make = makeDropdown.value;
+    const year = yearDropdown.value;
+    modelDropdown.innerHTML = '<option value="">Select Model</option>';
+    oilContainer.innerHTML = "";
+    airContainer.innerHTML = "";
+
+    if (!make || !year) return;
+
+    Object.keys(bikeData[make][year]).forEach(model => {
+      const option = document.createElement("option");
+      option.value = model;
+      option.textContent = model;
+      modelDropdown.appendChild(option);
+    });
+  });
+
+  // Display filters
+  modelDropdown.addEventListener("change", () => {
+    const make = makeDropdown.value;
+    const year = yearDropdown.value;
+    const model = modelDropdown.value;
+
+    oilContainer.innerHTML = "";
+    airContainer.innerHTML = "";
+
+    if (!make || !year || !model) return;
+
+    const bike = bikeData[make][year][model];
+
+    bike.oilFilters.forEach(f => {
+      const div = document.createElement("div");
+      div.textContent = `${f.brand} ${f.part} — $${f.price.toFixed(2)}`;
+      oilContainer.appendChild(div);
+    });
+
+    bike.airFilters.forEach(f => {
+      const div = document.createElement("div");
+      div.textContent = `${f.brand} ${f.part} — $${f.price.toFixed(2)}`;
+      airContainer.appendChild(div);
+    });
+  });
+});
